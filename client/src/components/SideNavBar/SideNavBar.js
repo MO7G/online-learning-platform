@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './SideNavBar.scss';
 import { Link } from 'react-router-dom';
+import { AiOutlineClose } from 'react-icons/ai'
+
 
 const SideNavBar = () => {
+  const [renderSideNavActive, setRenderSideNavActive] = useState(false);
+
+
+
   return (
     <div>
       <div className="side-bar">
         <div id="close-btn">
-          <i className="fas fa-times"></i>
+          <AiOutlineClose />
         </div>
 
         <div className="profile">
@@ -36,7 +42,7 @@ const SideNavBar = () => {
             <i className="fas fa-chalkboard-user"></i>
             <span>Teachers</span>
           </Link>
-          <Link to="/contact">
+          <Link to="/contactus">
             <i className="fas fa-headset"></i>
             <span>Contact Us</span>
           </Link>

@@ -1,0 +1,20 @@
+{
+  "dependencies": {},
+  "name": "online-learning-platform",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MO7G/online-learning-platform.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MO7G/online-learning-platform/issues"
+  },
+  "homepage": "https://github.com/MO7G/online-learning-platform#readme"
+}

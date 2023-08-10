@@ -7,12 +7,15 @@
     height: 100vh;
     border-right: var(--border);
     z-index: 1200;
+    
  }
  
  .side-bar #close-btn{
     text-align: right;
     padding: 2rem;
     display: none;
+    color: violet;
+     cursor: pointer;
  }
  
  .side-bar #close-btn i{
@@ -21,7 +24,7 @@
     background:var(--red);
     border-radius: .5rem;
     color:var(--white);
-    cursor: pointer;
+   
     height: 4.5rem;
     width: 4.5rem;
     line-height: 4.5rem;
@@ -29,7 +32,7 @@
  }
  
  .side-bar #close-btn i:hover{
-    background-color: var(--black);
+    background-color: red;
  }
  
  .side-bar .profile{

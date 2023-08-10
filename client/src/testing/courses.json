@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "name": "john deo",
+    "date": "21-10-2022",
+    "thumbnail": "thumb1",
+    "videoCount": 10,
+    "title": "complete HTML tutorial"
+  },
+  {
+    "id": 2,
+    "name": "jane smith",
+    "date": "15-09-2022",
+    "thumbnail": "thumb2",
+    "videoCount": 8,
+    "title": "CSS Basics"
+  },
+  {
+    "id": 3,
+    "name": "alex brown",
+    "date": "03-12-2022",
+    "thumbnail": "thumb3",
+    "videoCount": 12,
+    "title": "JavaScript Fundamentals"
+  },
+  {
+    "id": 4,
+    "name": "emily wilson",
+    "date": "05-11-2022",
+    "thumbnail": "thumb4",
+    "videoCount": 7,
+    "title": "Introduction to React"
+  },
+  {
+    "id": 5,
+    "name": "michael johnson",
+    "date": "18-08-2022",
+    "thumbnail": "thumb5",
+    "videoCount": 9,
+    "title": "Python Programming Basics"
+  },
+  {
+    "id": 6,
+    "name": "sarah miller",
+    "date": "10-07-2022",
+    "thumbnail": "thumb6",
+    "videoCount": 11,
+    "title": "Java Fundamentals"
+  },
+  {
+    "id": 7,
+    "name": "david anderson",
+    "date": "27-06-2022",
+    "thumbnail": "thumb7",
+    "videoCount": 6,
+    "title": "SQL Database Design"
+  },
+  {
+    "id": 8,
+    "name": "olivia williams",
+    "date": "09-04-2022",
+    "thumbnail": "thumb8",
+    "videoCount": 5,
+    "title": "Web Development Basics"
+  }
+]
