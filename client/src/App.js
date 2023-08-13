@@ -1,18 +1,29 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SideNavBar from "./components/SideNavBar/SideNavBar";
-import Header from "./components/Header/Header";
-import RoutesConfig from "./routes/routes";
+import { Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout/Layout'
+import Public from './components/public/Public'
+import Login from './feature/auth/Login'
+import Welcome from './feature/auth/Welcome'
+import RequireAuth from './feature/auth/RequireAuth'
+import UsersList from './feature/user/UserList'
+ 
+
 const App = () => {
-    return (
-        <Router>
-            <div className="App-container">
-                <Header />
-                <SideNavBar />
-                <RoutesConfig />
-            </div>
-        </Router>
-    );
+    return(
+        <Routes>
+        <Route path="/" element={<Layout />}>
+          {/* public routes */}
+          <Route index element={<Public />} />
+          <Route path="login" element={<Login />} />
+  
+          {/* protected routes */}
+          <Route element={<RequireAuth />}>
+            <Route path="welcome" element={<Welcome />} />
+            <Route path="userslist" element={<UsersList />} />
+          </Route>
+  
+        </Route>
+      </Routes>
+    )
 };
 
 export default App;

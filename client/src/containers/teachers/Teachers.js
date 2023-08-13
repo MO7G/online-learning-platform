@@ -2,6 +2,7 @@ import React from 'react'
 import './Teachers.scss'
 
 const Teachers = () => {
+    const role = "teacher"
     return (
         <div>
             <section class="teachers">
@@ -14,13 +15,13 @@ const Teachers = () => {
                 </form>
 
                 <div class="box-container">
-
-                    <div class="box offer">
+                 {role != "teacher" ? "" :    <div class="box offer">
                         <h3>become a tutor</h3>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, itaque ipsam fuga ex et aliquam.</p>
                         <a href="register.html" class="inline-btn">get started</a>
                     </div>
-
+                 }
+                 
                     <div class="box">
                         <div class="tutor">
                             <img src="images/pic-2.jpg" alt="" />
