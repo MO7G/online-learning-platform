@@ -1,5 +1,7 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
   "name": "online-learning-platform",
   "description": "",
   "version": "1.0.0",
