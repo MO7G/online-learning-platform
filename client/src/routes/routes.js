@@ -9,6 +9,7 @@ import Teachers from "../containers/teachers/Teachers";
 import Playlist from "../containers/Playlist/Playlist";
 import Header from "../components/Header/Header";
 import SideNavBar from "../components/SideNavBar/SideNavBar";
+import Login from '../containers/Login/Login'
 
 const RoutesConfig = () => {
   return (
@@ -18,6 +19,7 @@ const RoutesConfig = () => {
         <SideNavBar></SideNavBar>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
 
           <Route path="/courses" element={<Courses />} />

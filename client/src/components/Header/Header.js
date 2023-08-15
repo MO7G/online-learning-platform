@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Header.scss";
 import axios from 'axios';
 import { CgDarkMode } from "react-icons/cg";
@@ -48,17 +49,6 @@ const Header = () => {
 
 
 
-  useEffect(() => {
-    // Fetch data when the component mounts
-    axios.get('http://localhost:5002')
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
 
   return (
     <div>
@@ -91,19 +81,19 @@ const Header = () => {
           </div>
 
           <div className={`profile ${profileActive ? "active" : ""}`}>
-            <img src="images/pic-1.jpg" class="image" alt="" />
-            <h3 class="name">shaikh anas</h3>
-            <p class="role">studen</p>
-            <a href="profile.html" class="btn">
-              view profile
-            </a>
-            <div class="flex-btn">
-              <a href="login.html" class="option-btn">
-                login
-              </a>
-              <a href="register.html" class="option-btn">
-                register
-              </a>
+            <img src="images/pic-1.jpg" className="image" alt="" />
+            <h3 className="name">shaikh anas</h3>
+            <p className="role">student</p> {/* Corrected "studen" to "student" */}
+            <Link to="/profile" className="btn"> {/* Use Link component */}
+              View Profile
+            </Link>
+            <div className="flex-btn">
+              <Link to="/login" className="option-btn"> {/* Use Link component */}
+                Login
+              </Link>
+              <Link to="/register" className="option-btn"> {/* Use Link component */}
+                Register
+              </Link>
             </div>
           </div>
         </section>
