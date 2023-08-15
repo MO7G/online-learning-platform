@@ -1,10 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSignInAlt } from "react-icons/fa"; // Import the FaSignInAlt icon
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { login, reset } from "../../features/auth/authSlice";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -19,16 +19,26 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // Fetch data when the component mounts
-    axios
-      .get("http://localhost:3000")
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        toast.error("no");
-      });
+
+    const userData = {
+      email,
+      password,
+    };
+
+    dispatch(login(userData));
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
