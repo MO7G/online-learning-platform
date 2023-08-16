@@ -8,10 +8,11 @@ const { User } = require('../config/db')
 // @access Public
 const register = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
-    console.log(req.body)
+    const imageBuffer = req.file.buffer; // Image buffer
+    console.log(req.body);
     if (!name || !email || !password) {
         res.status(400);
-        throw new Error("Please add yahh all fields");
+        throw new Error("Please fill in all fields");
     }
 
     const userExist = await User.findOne({
@@ -22,7 +23,7 @@ const register = asyncHandler(async (req, res) => {
 
     if (userExist) {
         res.status(400);
-        throw new Error("User Exist");
+        throw new Error("User already exists");
     }
 
     const salt = await bcrypt.hash(password, 10);
@@ -31,21 +32,29 @@ const register = asyncHandler(async (req, res) => {
         user_name: name,
         gmail: email,
         pass: salt,
-        role: "student"
+        role: "student",
+        image: imageBuffer, // Store the image buffer as BLOB data
     })
+
+
+    // Convert BLOB data to Base64 encoding
+    const imageBase64 = Buffer.from(imageBuffer).toString("base64");
 
     if (user) {
         res.status(201).json({
             _id: user.user_id,
             name: user.user_name,
             role: user.role,
+            img: imageBase64,
             token: generateJwt(user.user_id, user.role)
         })
     } else {
         res.status(400);
-        throw new Error("invalid data");
+        throw new Error("Invalid data");
     }
-})
+});
+
+
 
 
 // @desc  Post Goals
@@ -80,13 +89,23 @@ const login = asyncHandler(async (req, res) => {
 // @desc  Put Goals
 // @route Put /api/goals/:id
 // @access private
-const getMe = asyncHandler(async (req, res) => {
+const profile = asyncHandler(async (req, res) => {
     const userData = await User.findOne({
         where: {
             user_id: req.user
         }
     })
     res.status(200).json({ message: `your id is ${userData.gmail}` });
+})
+
+
+const general = asyncHandler(async (req, res) => {
+    const userData = await User.findOne({
+        where: {
+            user_id: req.user
+        }
+    })
+    res.status(200).json({ message: `you are in my beloved` });
 })
 
 const generateJwt = ((id, role) => {
@@ -100,5 +119,6 @@ const generateJwt = ((id, role) => {
 module.exports = {
     register,
     login,
-    getMe
+    profile,
+    general
 };

@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         pass: {
             type: DataTypes.STRING,
         },
-        imgo: {
+        image: {
             type: DataTypes.BLOB('long'),
         },
         bdate: {

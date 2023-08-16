@@ -10,6 +10,7 @@ import Playlist from "../containers/Playlist/Playlist";
 import Header from "../components/Header/Header";
 import SideNavBar from "../components/SideNavBar/SideNavBar";
 import Login from '../containers/Login/Login'
+import Register from '../containers/Register/Register'
 
 const RoutesConfig = () => {
   return (
@@ -20,11 +21,10 @@ const RoutesConfig = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
-
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:id" element={<Playlist />} />
-
           <Route path="/profile" element={<Profile />} />
           <Route path="/contactus" element={<Contactus />} />
           <Route path="/Teachers" element={<Teachers />} />

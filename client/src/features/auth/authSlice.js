@@ -6,10 +6,12 @@ const user = JSON.parse(localStorage.getItem('user'))
 
 const initialState = {
     user: user ? user : null,
+    generalInfo: null,
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: '',
+
 }
 
 // Register user
@@ -45,6 +47,19 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
 
 export const logout = createAsyncThunk('auth/logout', async () => {
     await authService.logout()
+})
+
+// Login user
+export const generalInfo = createAsyncThunk('auth/profile', async (user, thunkAPI) => {
+    try {
+        return await authService.generalInfo(user)
+    } catch (error) {
+        const message =
+            (error.response && error.response.data && error.response.data.message) ||
+            error.message ||
+            error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
 })
 
 export const authSlice = createSlice({
@@ -91,6 +106,9 @@ export const authSlice = createSlice({
             .addCase(logout.fulfilled, (state) => {
                 state.user = null
             })
+            .addCase(generalInfo.fulfilled, (state, action) => {
+                state.generalInfo = action.payload.message
+            });
     },
 
 })

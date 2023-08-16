@@ -4,6 +4,7 @@ const { User } = require('../config/db')
 
 const protect = asyncHandler(async (req, res, next) => {
     let token;
+    console.log("i am from the server ", req.headers.authorization)
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             // Get the token from the header

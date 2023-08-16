@@ -9,15 +9,24 @@ import {
   FaGripLinesVertical,
 } from "react-icons/fa";
 import { BsSearch } from 'react-icons/bs'
+import UserWrapper from '../wrapper/UserWrapper'
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { reset, logout } from "../../features/auth/authSlice";
+import { FaSignOutAlt } from 'react-icons/fa'
+
+
 
 const Header = () => {
   // Check local storage for initial dark mode preference
   const initialDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
   const [darkMode, setDarkMode] = useState(initialDarkMode);
-  const [profileActive, setProfileActive] = useState(false);
+  const isLogged = useSelector(state => state.auth.user);
+  const user = useSelector(state => state.auth.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-
-
+  console.log(isLogged)
   const toggleColorMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
@@ -25,9 +34,7 @@ const Header = () => {
     localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
 
-  const toggleProfile = () => {
-    setProfileActive(!profileActive);
-  };
+
 
   const toggleSideNav = () => {
 
@@ -46,6 +53,8 @@ const Header = () => {
       document.body.classList.remove("dark");
     }
   }, [darkMode]);
+
+
 
 
 
@@ -72,28 +81,8 @@ const Header = () => {
           <div class="icons">
             <div id="menu-btn" onClick={toggleSideNav}><FaGripLines></FaGripLines></div>
             <div id="search-btn"><BsSearch></BsSearch></div>
-            <div id="user-btn" onClick={toggleProfile}>
-              <FaUserAstronaut></FaUserAstronaut>
-            </div>
             <div id="toggle-btn active" onClick={toggleColorMode}>
               <CgDarkMode></CgDarkMode>
-            </div>
-          </div>
-
-          <div className={`profile ${profileActive ? "active" : ""}`}>
-            <img src="images/pic-1.jpg" className="image" alt="" />
-            <h3 className="name">shaikh anas</h3>
-            <p className="role">student</p> {/* Corrected "studen" to "student" */}
-            <Link to="/profile" className="btn"> {/* Use Link component */}
-              View Profile
-            </Link>
-            <div className="flex-btn">
-              <Link to="/login" className="option-btn"> {/* Use Link component */}
-                Login
-              </Link>
-              <Link to="/register" className="option-btn"> {/* Use Link component */}
-                Register
-              </Link>
             </div>
           </div>
         </section>

@@ -1,25 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Home.scss'
 import Courses from '../Courses/Courses'
 import { images } from '../../constants'
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import UserWrapper from '../../components/wrapper/UserWrapper'
+import { reset, generalInfo } from "../../features/auth/authSlice";
+
 const Home = () => {
+  const isLogged = useSelector(state => state.auth.user);
+  const { general } = useSelector(
+    (state) => state.auth
+  );
+  const { name, setName } = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    console.log("I am refreshed")
+    dispatch(generalInfo())
+  }, [])
+
+
   return (
     <div>
       <section class="home-grid">
 
         <h1 class="heading">quick options</h1>
         <div class="box-container">
-
-          <div class="box">
-            <h3 class="title">likes and comments</h3>
-            <p class="likes">total likes : <span>25</span></p>
-            <a href="#" class="inline-btn">view likes</a>
-            <p class="likes">total comments : <span>12</span></p>
-            <a href="#" class="inline-btn">view comments</a>
-            <p class="likes">saved playlists : <span>4</span></p>
-            <a href="#" class="inline-btn">view playlists</a>
-          </div>
-
+          <UserWrapper>
+            <div class="box">
+              <h3 class="title">likes and comments</h3>
+              <p class="likes">total likes : <span>25</span></p>
+              <a href="#" class="inline-btn">view likes</a>
+              <p class="likes">total comments : <span>12</span></p>
+              <a href="#" class="inline-btn">view comments</a>
+              <p class="likes">saved playlists : <span>4</span></p>
+              <a href="#" class="inline-btn">view playlists</a>
+            </div>
+          </UserWrapper>
           <div class="box">
             <h3 class="title">top categories</h3>
             <div class="flex">
@@ -55,9 +75,9 @@ const Home = () => {
         </div>
       </section>
 
-     <div className='courses-container'>
-      <Courses></Courses>
-     </div>
+      <div className='courses-container'>
+        <Courses></Courses>
+      </div>
     </div>
   )
 }
