@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Courses.scss'
 import { images } from '../../constants'
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
+import { endpoints } from '../../config/apiConfig';
 
 const Courses = () => {
-   const data = require('../../testing/courses.json');
-   console.log(data);
+   const [courses, setCourses] = useState([]);
+   useEffect(() => {
+      async function fetchCourses() {
+         try {
+            const response = await axios.get(endpoints.courses.allCourses);
+            console.log("this is the course response ", response);
+            setCourses(response.data);
+         } catch (error) {
+            // Handle error
+         }
+      }
+      fetchCourses();
+   }, []);
 
    return (
       <div className='Courses-container'>
@@ -16,21 +28,23 @@ const Courses = () => {
 
             <div class="box-container">
 
-               {data.map(item => (
-                  <div key={item.id} className="box">
+               {courses.map(item => (
+                  <div key={item._id} className="box">
                      <div className="tutor">
-                        <img src={images[item.thumbnail]} alt="" />
+                        <div className='tutor_wrapper'>
+                           <img src={`data:image/jpeg;base64, ${item.img}`} alt="" />
+                        </div>
                         <div className="info">
-                           <h3>{item.name}</h3>
+                           <h3>moha</h3>
                            <span>{item.date}</span>
                         </div>
                      </div>
                      <div className="thumb">
-                        <img src={images[item.thumbnail]} alt="" />
-                        <span>{item.videoCount} videos</span>
+                        <img src={`data:image/png;base64, ${item.img}`} alt="" />
+                        <span>{item.numOfVideos} videos</span>
                      </div>
-                     <h3 className="title">{item.title}</h3>
-                     <Link to={`/courses/${item.id}`} className="inline-btn">
+                     <h3 className="title">{item.name}</h3>
+                     <Link to={`/courses/${item._id}`} className="inline-btn">
                         View Playlist
                      </Link>
                   </div>

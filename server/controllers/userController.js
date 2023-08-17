@@ -71,10 +71,13 @@ const login = asyncHandler(async (req, res) => {
             gmail: email
         }
     })
+    // Convert BLOB data to Base64 encoding
+    const imageBase64 = Buffer.from(user.image).toString("base64");
     if (user && (await bcrypt.compare(password, user.pass))) {
         res.status(201).json({
             _id: user.user_id,
             name: user.user_name,
+            img: imageBase64,
             role: user.role,
             token: generateJwt(user.user_id, user.role)
         })

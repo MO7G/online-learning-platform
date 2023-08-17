@@ -11,6 +11,7 @@ import Header from "../components/Header/Header";
 import SideNavBar from "../components/SideNavBar/SideNavBar";
 import Login from '../containers/Login/Login'
 import Register from '../containers/Register/Register'
+import VideoPage from "../containers/VideoPage/VideoPage";
 
 const RoutesConfig = () => {
   return (
@@ -24,10 +25,11 @@ const RoutesConfig = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/courses/:id" element={<Playlist />} />
+          <Route path="/courses/:courseId" element={<Playlist />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/contactus" element={<Contactus />} />
           <Route path="/Teachers" element={<Teachers />} />
+          <Route path="/video/:videoId" element={<VideoPage />} />
         </Routes>
       </div>
     </BrowserRouter>

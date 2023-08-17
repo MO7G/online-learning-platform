@@ -22,7 +22,7 @@ const SideNavBar = () => {
   }
 
 
-  console.log(isLogged ? `this is the user ${user.img}` : "no one inside");
+  //console.log(isLogged ? `this is the user ${user.img}` : "no one inside");
 
   return (
     <div>
