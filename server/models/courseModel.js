@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true,
         },
+        //test commit
         courseName: {
             type: DataTypes.STRING,
         },
