@@ -23,7 +23,7 @@ const db = {};
 db.User = require('../models/userModel')(sequelize, Sequelize);
 db.Course = require('../models/courseModel')(sequelize, Sequelize);
 db.Videos = require('../models/videoModel')(sequelize, Sequelize);
-
+db.Interactions = require('../models/interactionModel')(sequelize, Sequelize);
 
 
 db.User.sync()
@@ -50,7 +50,15 @@ db.Videos.sync()
     console.error('Error syncing User table:', error);
   });
 
-module.exports = db;
+db.Interactions.sync()
+  .then(() => {
+    console.log('Interaction table synced');
+  })
+  .catch((error) => {
+    console.error('Error syncing User table:', error);
+  });
+module.exports = { db, sequelize }; // Export both db and sequelize
+
 
 
 

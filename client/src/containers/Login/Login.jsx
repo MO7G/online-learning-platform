@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login, reset } from "../../features/auth/authSlice";
+import "./Login.scss";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -34,6 +35,9 @@ const Login = () => {
     }
 
     if (isSuccess || user) {
+      if (!user) {
+        toast.success(message);
+      }
       navigate("/");
     }
 
@@ -50,19 +54,16 @@ const Login = () => {
 
   return (
     <>
-      <section className="heading">
-        <h1>
-          <FaSignInAlt /> Login
-        </h1>
-        <p>Login and start setting goals</p>
-      </section>
-
-      <section className="form">
+      <section className="form-container">
         <form onSubmit={onSubmit}>
-          <div className="form-group">
+          <h3>login now</h3>
+          <p>
+            your email <span>*</span>
+          </p>
+          <div>
             <input
               type="email"
-              className="form-control"
+              className="box"
               id="email"
               name="email"
               value={email}
@@ -70,10 +71,13 @@ const Login = () => {
               onChange={onChange}
             />
           </div>
-          <div className="form-group">
+          <p>
+            your password <span>*</span>
+          </p>
+          <div>
             <input
               type="password"
-              className="form-control"
+              className="box"
               id="password"
               name="password"
               value={password}

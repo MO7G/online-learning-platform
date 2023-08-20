@@ -15,6 +15,7 @@ const Courses = () => {
             setCourses(response.data);
          } catch (error) {
             // Handle error
+            console.log("no courses failed")
          }
       }
       fetchCourses();

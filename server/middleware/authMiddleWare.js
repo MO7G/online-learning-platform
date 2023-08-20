@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-const asyncHandler = require('express-async-handler')
-const { User } = require('../config/db')
+const asyncHandler = require('express-async-handler');
+const { User } = require('../config/db');
 
 const protect = asyncHandler(async (req, res, next) => {
     let token;
-    console.log("i am from the server ", req.headers.authorization)
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             // Get the token from the header
@@ -12,16 +11,18 @@ const protect = asyncHandler(async (req, res, next) => {
 
             // Verify the token 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = decoded.id
+
+            req.user = decoded.id;
             next();
         } catch (error) {
             console.log(error);
-            res.status(401);
-            throw new Error("Not authorized");
+            // token here is expired
+            res.status(401).json({ message: 'Not authorized dude' }); // Send a JSON response
+            // Or you can use res.sendStatus(401); to send only the status code
         }
     } else {
-        res.status(401);
-        throw new Error("Not authorized, no token");
+        return res.status(403).json({ message: 'Not authorized, no token' }); // Send a JSON response
+        // Or you can use res.sendStatus(403); to send only the status code
     }
 });
 

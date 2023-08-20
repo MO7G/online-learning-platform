@@ -12,6 +12,7 @@ const Playlist = () => {
         async function fetchCourses() {
             try {
                 const response = await axios.get(endpoints.courses.getCourseById.replace(':courseId', courseId));
+                console.log("this is the course ", course)
                 setCourse(response.data);
 
             } catch (error) {
@@ -33,22 +34,24 @@ const Playlist = () => {
                         </form>
 
                         <div class="thumb">
-                            <img src={`data:image/jpeg;base64, ${course.img}`} alt="" />
+                            <img src={`data:image/jpeg;base64, ${course.courseImage}`} alt="" />
                             <span>{course.numOfVideos}</span>
                         </div>
                     </div>
                     <div class="column">
                         <div class="tutor">
-                            <img src={`data:image/jpeg;base64, ${course.img}`} alt="" />                            <div>
-                                <h3>Mo7a</h3>
+                            <img src={`data:image/jpeg;base64, ${course.teacherImage}`} alt="" />                            <div>
+                                <h3>{course.teacherName}</h3>
                                 <span>{course.date}</span>
                             </div>
                         </div>
 
                         <div class="details">
-                            <h3>{course.name}</h3>
+                            <h3>{course.courseName}</h3>
                             <p>{course.description}</p>
-                            <a href="teacher_profile.html" class="inline-btn">view profile</a>
+                            <Link to={`${course.teacherId}`}>
+                                <a class="inline-btn">view profile</a>
+                            </Link>
                         </div>
                     </div>
                 </div>

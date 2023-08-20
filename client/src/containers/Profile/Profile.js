@@ -1,16 +1,17 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from "react-redux";
+import { reset, generalInfo } from "../../features/auth/authSlice";
 const Profile = () => {
+  const dispatch = useDispatch();
+  const { general } = useSelector(
+    (state) => state.auth
+  );
+  useEffect(() => {
+    console.log("I am refreshed")
+    dispatch(generalInfo())
+  }, [])
   // Retrieve user data from local storage
   const user = JSON.parse(localStorage.getItem('user'));
-  console.log("this is the user ", user);
-  if (!user) {
-    // User is not logged in, show a message or redirect to login page
-    return <div>
-      <p>Please log in to view your profile.</p>
-    </div>;
-  }
-
   // User is logged in, render the profile
   return (
     <div>

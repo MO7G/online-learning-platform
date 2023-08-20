@@ -71,14 +71,14 @@ const Register = () => {
           <p>
             Your Name <span>*</span>
           </p>
-          <div className="form-group">
+          <div>
             <input
               type="text"
               name="name"
               placeholder="Enter your name"
               required
               maxLength="50"
-              className="form-control"
+              className="box"
               value={name}
               onChange={onChange}
             />
@@ -86,14 +86,14 @@ const Register = () => {
           <p>
             Your Email <span>*</span>
           </p>
-          <div className="form-group">
+          <div>
             <input
               type="email"
               name="email"
               placeholder="Enter your email"
               required
               maxLength="50"
-              className="form-control"
+              className="box"
               value={email}
               onChange={onChange}
             />
@@ -101,14 +101,14 @@ const Register = () => {
           <p>
             Your Password <span>*</span>
           </p>
-          <div className="form-group">
+          <div>
             <input
               type="password"
               name="password"
               placeholder="Enter your password"
               required
               maxLength="20"
-              className="form-control"
+              className="box"
               value={password}
               onChange={onChange}
             />
@@ -116,14 +116,14 @@ const Register = () => {
           <p>
             Confirm Password <span>*</span>
           </p>
-          <div className="form-group">
+          <div>
             <input
               type="password"
               name="password2"
               placeholder="Confirm your password"
               required
               maxLength="20"
-              className="form-control"
+              className="box"
               value={password2}
               onChange={onChange}
             />
@@ -131,13 +131,13 @@ const Register = () => {
           <p>
             Select Profile <span>*</span>
           </p>
-          <div className="form-group">
+          <div>
             <input
               type="file"
               accept="image/*"
               name="image"
               required
-              className="form-control"
+              className="box"
               onChange={onChange}
             />
           </div>

@@ -12,7 +12,7 @@ import { BsSearch } from 'react-icons/bs'
 import UserWrapper from '../wrapper/UserWrapper'
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { reset, logout } from "../../features/auth/authSlice";
+import { reset, logout, validateToken } from "../../features/auth/authSlice";
 import { FaSignOutAlt } from 'react-icons/fa'
 
 
@@ -21,12 +21,11 @@ const Header = () => {
   // Check local storage for initial dark mode preference
   const initialDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
   const [darkMode, setDarkMode] = useState(initialDarkMode);
-  const isLogged = useSelector(state => state.auth.user);
+  const isLogged = useSelector(state => state.auth.isValidToken);
   const user = useSelector(state => state.auth.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(isLogged)
   const toggleColorMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
@@ -55,6 +54,20 @@ const Header = () => {
   }, [darkMode]);
 
 
+  useEffect(() => {
+    dispatch(validateToken());
+  }, []);
+
+
+  useEffect(() => {
+    if (!isLogged && user == null) {
+      console.log("I am callled");
+      dispatch(logout());
+    }
+  }, [isLogged]);
+
+
+
 
 
 
@@ -63,9 +76,12 @@ const Header = () => {
     <div>
       <header class="header">
         <section class="flex">
-          <a href="home.html" class="logo">
-            MO7G
-          </a>
+
+          <Link to="/">
+            <a class="logo">
+              MO7G
+            </a>
+          </Link>
 
           <form action="search.html" method="post" class="search-form">
             <input

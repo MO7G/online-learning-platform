@@ -17,11 +17,6 @@ const Home = () => {
   const dispatch = useDispatch();
 
 
-  useEffect(() => {
-    console.log("I am refreshed")
-    dispatch(generalInfo())
-  }, [])
-
 
   return (
     <div>

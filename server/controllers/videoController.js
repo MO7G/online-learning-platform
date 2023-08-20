@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
-const { Videos } = require('../config/db')
-
+const { Interactions } = require('../config/db')
+const { db, sequelize } = require('../config/db.js')
+const Videos = db.Videos
 // @desc  Get Goals
 // @route Get /api/goals
 // @access Public
@@ -42,32 +43,20 @@ const getCourseVideos = asyncHandler(async (req, res) => {
 // @route Post /api/goals
 // @access Public
 const getVideosById = asyncHandler(async (req, res) => {
-    const courseId = req.params.courseId; // Assuming the route parameter is named 'id'
-    console.log(courseId)
+    const videoId = req.params.videoId;
+
     try {
-        const course = await Course.findByPk(courseId);
+        const video = await Videos.findByPk(videoId, {
+            attributes: { exclude: ['image'] } // Exclude the 'image' property from the result
+        });
 
-        if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
-        }
-
-        const imageBase64 = Buffer.from(course.courseImage).toString("base64");
-        const courseWithImage = {
-            _id: course.courseId, // Change this to the appropriate field from your course model
-            name: course.courseName,
-            description: course.courseDescription,
-            date: course.coursedate,
-            numOfVideos: course.numberofVideos,
-            img: imageBase64,
-            // Add more properties as needed
-        };
-
-        res.status(200).json(courseWithImage);
+        res.status(200).json(video);
     } catch (error) {
-        // Handle error
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+
 
 
 
@@ -93,7 +82,6 @@ const editVideo = asyncHandler(async (req, res) => {
     res.status(200).json({ message: `you are in my beloved` });
 })
 
-
 const deleteVideo = asyncHandler(async (req, res) => {
     const userData = await User.findOne({
         where: {
@@ -102,6 +90,45 @@ const deleteVideo = asyncHandler(async (req, res) => {
     })
     res.status(200).json({ message: `you are in my beloved` });
 })
+
+const getVideoComments = asyncHandler(async (req, res) => {
+    const videoId = req.params.videoId;
+    try {
+        const query = `
+            SELECT user.user_id,  user.image , user.user_name, interaction.comment, interaction.InteractionDate
+            FROM user
+            JOIN interaction ON interaction.StudentID = user.user_id
+            WHERE interaction.videoid = :videoId
+        `;
+
+
+        const query1 = `SELECT COUNT(*) as rowCount
+FROM user
+JOIN interaction ON interaction.StudentID = user.user_id
+WHERE interaction.videoid = :videoId;
+`;
+
+        const comments = await sequelize.query(query, {
+            replacements: { videoId: videoId },
+            type: sequelize.QueryTypes.SELECT
+        });
+
+        const numberOfComments = await sequelize.query(query1, {
+            replacements: { videoId: videoId },
+            type: sequelize.QueryTypes.SELECT
+        });
+
+        const finalData = {
+            comments: comments,
+            numberOfComments: numberOfComments
+        }
+
+        res.status(200).json(finalData);
+    } catch (error) {
+        console.error(error); // Print the error to the console
+        res.status(500).json({ message: 'Internal sad erver error' });
+    }
+});
 
 
 
@@ -112,5 +139,6 @@ module.exports = {
     getVideosById,
     createVideo,
     editVideo,
-    deleteVideo
+    deleteVideo,
+    getVideoComments
 };

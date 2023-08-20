@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler')
-const { User } = require('../config/db')
+const { db, sequelize } = require('../config/db.js')
+const User = db.User
 
 // @desc  Get Goals
 // @route Get /api/goals
@@ -111,9 +112,20 @@ const general = asyncHandler(async (req, res) => {
     res.status(200).json({ message: `you are in my beloved` });
 })
 
+
+const numOfUsers = asyncHandler(async (req, res) => {
+    const studentCount = await User.count({
+        where: {
+            role: 'student'
+        }
+    });
+    res.status(200).json({ studentCount });
+});
+
+
 const generateJwt = ((id, role) => {
     return jwt.sign({ id, role }, process.env.JWT_SECRET, {
-        expiresIn: "30d"
+        expiresIn: "1d"
     })
 })
 
@@ -123,5 +135,6 @@ module.exports = {
     register,
     login,
     profile,
-    general
+    general,
+    numOfUsers
 };

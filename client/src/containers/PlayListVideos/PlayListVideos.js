@@ -7,6 +7,15 @@ import { useParams } from 'react-router-dom';
 const PlayListVideos = () => {
     const { courseId } = useParams();
     const [courseVideos, setCourseVideos] = useState([]);
+    const [userCount, setUserCount] = useState(0);
+    const fetchUserCount = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/api/user'); // Replace with your API endpoint
+            setUserCount(response.data.studentCount);
+        } catch (error) {
+            console.error('Error fetching user count:', error);
+        }
+    };
     useEffect(() => {
         async function fetchCourses() {
 
@@ -22,6 +31,16 @@ const PlayListVideos = () => {
     }, []);
 
 
+    useEffect(() => {
+        // fetchUserCount();
+        // const interval = setInterval(fetchUserCount, 5000); // Poll every 5 seconds
+        //return () => clearInterval(interval);
+    }, []);
+
+
+
+
+
 
 
 
@@ -29,7 +48,7 @@ const PlayListVideos = () => {
 
         <section class="playlist-videos">
 
-            <h1 class="heading">playlist videos</h1>
+            <h1 class="heading">playlist videos {userCount}</h1>
             <div class="box-container">
                 {courseVideos.map(item => (
                     <Link key={item._id} to={`/video/${item._id}`} className="box">
