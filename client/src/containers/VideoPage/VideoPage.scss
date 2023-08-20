@@ -184,6 +184,29 @@
    line-height: 1.5;
    position: relative;
    z-index: 0;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: flex-start;
+ 
+   .comment{
+      width: 85%;
+      align-items: center;
+      margin-top: 5px;
+   }
+    .delete_btn a {
+      .dumpster{
+         font-size:30px;
+         &:hover{
+            transform: scale(1.2); /* Scale the icon on hover */
+            color: var(--main-color) ;/* Change icon color on hover */
+            cursor: pointer;
+         }
+      }
+
+  
+   }
+
 }
 
 .comments .box-container .box .comment-box::before{

@@ -79,6 +79,15 @@ const getCourseById = asyncHandler(async (req, res) => {
 });
 
 
+const getCourseTeacherInfo = asyncHandler(async (req, res) => {
+    const courseId = req.params.courseId; // Assuming the route parameter is named 'id'
+    const teacherId = req.params.teacherId;
+    console.log("this is the course id ", courseId)
+    console.log("this is the teahcer id ", teacherId);
+    res.status(200).json({ message: "good connection to here" })
+});
+
+
 
 // @desc  Put Goals
 // @route Put /api/goals/:id
@@ -122,5 +131,6 @@ module.exports = {
     getCourseById,
     createCourse,
     editCourse,
-    deleteCourse
+    deleteCourse,
+    getCourseTeacherInfo
 };

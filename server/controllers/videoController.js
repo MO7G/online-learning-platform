@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler')
 const { Interactions } = require('../config/db')
 const { db, sequelize } = require('../config/db.js')
 const Videos = db.Videos
+const Interaction = db.Interactions
 // @desc  Get Goals
 // @route Get /api/goals
 // @access Public
@@ -95,7 +96,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
     const videoId = req.params.videoId;
     try {
         const query = `
-            SELECT user.user_id,  user.image , user.user_name, interaction.comment, interaction.InteractionDate
+            SELECT user.user_id, interaction.InteractionID, user.image , user.user_name, interaction.comment, interaction.InteractionDate
             FROM user
             JOIN interaction ON interaction.StudentID = user.user_id
             WHERE interaction.videoid = :videoId
@@ -132,6 +133,35 @@ WHERE interaction.videoid = :videoId;
 
 
 
+const deleteComment = asyncHandler(async (req, res) => {
+    const interactionId = req.params.interactionId;
+
+    // Check if the comment exists
+    const interaction = await Interaction.findByPk(interactionId);
+    if (!interaction) {
+        return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    console.log("-----------------------------------------------------")
+    console.log("-----------------------------------------------------")
+    console.log("-----------------------------------------------------")
+    console.log("-----------------------------------------------------")
+    console.log(interaction)
+
+    // Delete the comment
+    await interaction.destroy();
+    res.status(200).json({ message: 'Comment deleted successfully' });
+});
+
+
+
+const addComment = asyncHandler(async (req, res) => {
+    const userId = req.params.userId;
+
+    res.status(200).json({ message: 'Comment deleted successfully' });
+});
+
+
 
 
 module.exports = {
@@ -140,5 +170,6 @@ module.exports = {
     createVideo,
     editVideo,
     deleteVideo,
-    getVideoComments
+    getVideoComments,
+    deleteComment
 };

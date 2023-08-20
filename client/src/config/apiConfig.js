@@ -10,6 +10,7 @@ export const endpoints = {
         videosByCourse: `${API_BASE_URL}/videos/videos/:courseId`,
         videoDetails: `${API_BASE_URL}/videos/video/:id`, // Example with dynamic parameter
         videoCommentDetails: `${API_BASE_URL}/videos/video/:id/comments`,
+        deleteVideoComment: `${API_BASE_URL}/videos/video/DeleteComment/:interactionId`,
         // Add more video endpoints as needed
     },
     // Add more endpoints for other components if needed

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { endpoints } from '../../config/apiConfig';
 import { useParams } from 'react-router-dom';
+import { AiOutlineDelete } from 'react-icons/ai'
 const VideoPage = () => {
     const { videoId } = useParams();
     const [video, setVideo] = useState([]);
@@ -16,7 +17,6 @@ const VideoPage = () => {
 
             try {
                 const response = await axios.get(endpoints.videos.videoDetails.replace(':id', videoId));
-                console.log("this is the playlistcoursevideo response ", response);
                 setVideo(response.data);
             } catch (error) {
                 // Handle error
@@ -26,7 +26,6 @@ const VideoPage = () => {
 
             try {
                 const response = await axios.get(endpoints.videos.videoCommentDetails.replace(':id', videoId));
-                console.log("this is the playlistcoursevideo response ", response);
                 setCommentsNumber(response.data.numberOfComments[0].rowCount);
                 setComments(response.data.comments);
             } catch (error) {
@@ -37,75 +36,28 @@ const VideoPage = () => {
         fetchComments();
     }, []);
 
-    const handleEditeComment = () => {
 
-    }
-    const handleDeleteComment = () => {
-
-    }
-
-
-    const [editModeIndex, setEditModeIndex] = useState(-1);
-    const [editedComments, setEditedComments] = useState('');
-
-    const handleEditComment = (index) => {
-        setEditModeIndex(index);
-        setEditedComments([...editedComments, comments[index].comment]);
-    };
-
-    const handleEditInput = (e, index) => {
-        const newEditedComments = [...editedComments];
-        newEditedComments[index] = e.target.innerText;
-        setEditedComments(newEditedComments);
-    };
-
-    const handleEditChange = (e) => {
-        setEditedComments(e.target.textContent);
-        console.log(editedComments)
-    }
-
-    const handleCancelEdit = (itemIndex) => {
-        // const itemIndex = comments.findIndex(item => item.user_id === id);
-        // console.log(itemIndex)
-        // Create a copy of the array to avoid direct mutation
-        const updatedComments = [...comments];
-
-        // Update the comment of the specific item in the copied array
-        if (itemIndex !== -1) {
-            setComments(updatedComments);
+    const handleDeleteComment = async (index, InteractionId) => {
+        const updatedComments = comments.filter((_, i) => i !== index);
+        setComments(updatedComments);
+        try {
+            const response = await axios.delete(endpoints.videos.deleteVideoComment.replace(':interactionId', InteractionId));
+            setVideo("hahahah ", response.data);
+        } catch (error) {
+            // Handle error
         }
-
-        setEditModeIndex(-1);
-
-        // Reset editedComments for the canceled comment
-    };
-
-    const handleEditSubmit = (itemIndex) => {
-        // const itemIndex = comments.findIndex(item => item.user_id === id);
-        // console.log(itemIndex)
-        // Create a copy of the array to avoid direct mutation
-        const updatedComments = [...comments];
-
-        // Update the comment of the specific item in the copied array
-        if (itemIndex !== -1) {
-            console.log("yes")
-            updatedComments[itemIndex] = { ...updatedComments[itemIndex], comment: editedComments };
-            setComments(updatedComments);
-        }
-
-        setEditModeIndex(-1);
-        setEditedComments('')
-
-        // Reset editedComments for the canceled comment
-    };
-
-    const temp = () => {
-        console.log(comments);
     }
+
+
+
+
+
+
+
 
     return (
         <div>
-            <button onClick={temp}>asdfasfas</button>
+            <button>asdfasfas</button>
             <section class="watch-video">
 
                 <div class="video-container">
@@ -165,35 +117,22 @@ const VideoPage = () => {
                                     <span>{item.date}</span>
                                 </div>
                             </div>
-                            {/* Render comment content based on edit mode */}
-                            {editModeIndex === index ? (
-                                <div
-                                    className="comment-box"
-                                    contentEditable="true"
-                                    onInput={() => handleEditInput}
-                                >
-                                    {item.comment}
-                                </div>
-                            ) : (
-                                <div className="comment-box">{item.comment}</div>
-                            )}
-                            <div class="flex-btn">
-                                {/* Conditionally render the buttons */}
+
+                            <div className="comment-box">
+
+                                <div className='comment'>{item.comment}</div>
                                 {user && user._id === item.user_id && (
-                                    <>
-                                        {editModeIndex === index ? (
-                                            <>
-                                                <button onClick={() => handleEditSubmit(index)}>Save</button>
-                                                <button onClick={() => handleCancelEdit(index)}>Cancel</button>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <button onClick={() => handleEditComment(index)}>Edit</button>
-                                                <button onClick={() => handleDeleteComment(index)}>Delete</button>
-                                            </>
-                                        )}
-                                    </>
-                                )}
+                                    <div className='delete_btn'>
+                                        {<a>
+                                            <AiOutlineDelete onClick={() => handleDeleteComment(index, item.InteractionID)} className='dumpster'></AiOutlineDelete>
+                                        </a>}
+                                    </div>)}
+
+
+                            </div>
+
+                            <div class="flex-btn">
+
                             </div>
                         </div>
                     ))}
