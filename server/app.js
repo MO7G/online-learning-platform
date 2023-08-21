@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors'); // Require the cors middleware
 const dbConnection = require('./config/db'); // Adjust the path based on your file structure
 const { errorHandler } = require('./middleware/errorMiddleWare')
+const bodyParser = require('body-parser');
 
 require('dotenv').config();
 const port = process.env.PORT || 5000

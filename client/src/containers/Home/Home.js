@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Home.scss'
+import { Link } from "react-router-dom";
+
 import Courses from '../Courses/Courses'
 import { images } from '../../constants'
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +15,7 @@ const Home = () => {
     (state) => state.auth
   );
   const { name, setName } = useState('');
+  const { counter, setCounter } = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,17 +27,6 @@ const Home = () => {
 
         <h1 class="heading">quick options</h1>
         <div class="box-container">
-          <UserWrapper>
-            <div class="box">
-              <h3 class="title">likes and comments</h3>
-              <p class="likes">total likes : <span>25</span></p>
-              <a href="#" class="inline-btn">view likes</a>
-              <p class="likes">total comments : <span>12</span></p>
-              <a href="#" class="inline-btn">view comments</a>
-              <p class="likes">saved playlists : <span>4</span></p>
-              <a href="#" class="inline-btn">view playlists</a>
-            </div>
-          </UserWrapper>
           <div class="box">
             <h3 class="title">top categories</h3>
             <div class="flex">
@@ -60,13 +52,13 @@ const Home = () => {
               <a href="#"><i class="fab fa-bootstrap"></i><span>bootstrap</span></a>
             </div>
           </div>
-
           <div class="box">
-            <h3 class="title">become a tutor</h3>
+            <h3 class="title">Check Our Reviews</h3>
             <p class="tutor">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis, nam?</p>
-            <a href="teachers.html" class="inline-btn">get started</a>
+            <Link to={"/about"}>
+              <a class="inline-btn">get started</a>
+            </Link>
           </div>
-
         </div>
       </section>
 

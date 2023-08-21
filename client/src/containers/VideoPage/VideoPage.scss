@@ -9,13 +9,14 @@
    position: relative;
    margin-bottom: 1.5rem;
    height: 600px;
+   height: 650px;
 }
 
 .watch-video .video-container .video iframe{
    border-radius: .5rem;
    width: 100%;
    height: 100%;
-   object-fit: contain;
+   object-fit: fill;
    background-color: #000;
 }
 

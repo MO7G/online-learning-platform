@@ -14,6 +14,7 @@ import Register from '../containers/Register/Register'
 import VideoPage from "../containers/VideoPage/VideoPage";
 import ProtectedRoutes from '../containers/util/ProtectedRoutes'
 import TeacherProfile from "../containers/TeacherProfile/TeacherProfile";
+import SkipRoutes from '../containers/util/SkipRoutes'
 const RoutesConfig = () => {
   return (
     <BrowserRouter> {/* Use BrowserRouter here */}
@@ -21,24 +22,30 @@ const RoutesConfig = () => {
         <Header></Header>
         <SideNavBar></SideNavBar>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
 
+          <Route path="/" element={<Home />} />
+
+          <Route path="/TeacherProfile" element={<TeacherProfile />} />
           {/* Private Routes  */}
           <Route element={<ProtectedRoutes />}>
             <Route element={<Profile />} path="/profile" exact />
+            <Route element={<h1>this is the dashboard</h1>} path="/dashboard" exact />
           </Route>
+          if(loged == true){
 
-          <Route path="/register" element={<Register />} />
+          }
           <Route path="/about" element={<About />} />
+
+          {/* Private Routes  */}
+          <Route element={<SkipRoutes />}>
+            <Route element={<Login />} path="/login" exact />
+            <Route element={<Register />} path="/register" exact />
+          </Route>
 
           {/* Courses Routes  */}
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:courseId" element={<Playlist />} />
           <Route path="/courses/:courseId/:teacherIdzz" element={<TeacherProfile />} />
-
-
-
 
 
           <Route path="/contactus" element={<Contactus />} />

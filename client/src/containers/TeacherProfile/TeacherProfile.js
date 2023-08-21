@@ -1,22 +1,43 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom';
 import './TeacherProfile.scss'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { endpoints } from '../../config/apiConfig';
+import Courses from '../Courses/Courses';
 const TeacherProfile = () => {
-    const [courses, setCourses] = useState([]);
+    const [teacherProfile, setTeacherProfile] = useState([]);
+    const [coureses, setCourses] = useState([]);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const teacherId = queryParams.get('teacherId');
+
+
     useEffect(() => {
-        async function fetchCourses() {
+        async function fetchTeacherProfile() {
             try {
-                const response = await axios.get(endpoints.courses.allCourses);
-                console.log("this is the course response ", response);
-                setCourses(response.data);
+                const response = await axios.get(endpoints.user.teacherProfile.replace(':teacherId', teacherId));
+                console.log("this is the teacher profile response ", response);
+                setTeacherProfile(response.data[0]);
             } catch (error) {
                 // Handle error
                 console.log("no courses failed")
             }
         }
-        fetchCourses();
+
+
+        async function fetchTeacherCourses() {
+            try {
+                const response = await axios.get(endpoints.user.teacherCourses.replace(':teacherId', teacherId));
+                console.log("this is the total coures !!!!  ", response.data[0]);
+                setCourses(response.data);
+            } catch (error) {
+                console.log("no courses failed")
+            }
+        }
+
+        fetchTeacherProfile();
+        fetchTeacherCourses();
     }, []);
 
 
@@ -31,15 +52,15 @@ const TeacherProfile = () => {
 
                 <div class="details">
                     <div class="tutor">
-                        <img src="images/pic-2.jpg" alt="" />
-                        <h3>john deo</h3>
+                        <img className='image' src={`data:image/jpeg;base64,${teacherProfile.image}`} alt={teacherProfile.user_name} />
+                        <h3>{teacherProfile.user_name}</h3>
                         <span>developer</span>
                     </div>
                     <div class="flex">
-                        <p>total playlists : <span>4</span></p>
-                        <p>total videos : <span>18</span></p>
-                        <p>total likes : <span>1208</span></p>
-                        <p>total comments : <span>52</span></p>
+                        <p>total courses : <span>{teacherProfile.num_courses}</span></p>
+                        <p>total videos : <span>temp</span></p>
+                        <p>total likes : <span>{teacherProfile.total_likes}</span></p>
+                        <p>total comments : <span>{teacherProfile.total_comments}</span></p>
                     </div>
                 </div>
 
@@ -51,18 +72,16 @@ const TeacherProfile = () => {
 
                 <div class="box-container">
 
-                    <div class="box">
-                        <div class="thumb">
-                            <img src="images/thumb-1.png" alt="" />
-                            <span>10 videos</span>
+                    {coureses.map((item) => (
+                        <div class="box" key={item.courseName}>
+                            <div class="thumb">
+                                <img src={`data:image/jpeg;base64,${item.courseImage}`} alt="" />
+                                <span>{item.numberofVideos} videos</span>
+                            </div>
+                            <h3 class="title">{item.courseName}</h3>
+                            <Link to={`/courses/${item.courseId}`} class="inline-btn">view playlist</Link>
                         </div>
-                        <h3 class="title">complete HTML tutorial</h3>
-                        <a href="playlist.html" class="inline-btn">view playlist</a>
-                    </div>
-
-
-
-
+                    ))}
                 </div>
 
             </section>

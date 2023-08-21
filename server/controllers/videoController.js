@@ -12,7 +12,7 @@ const getCourseVideos = asyncHandler(async (req, res) => {
     // Fetch videos that are associated with the given courseId
     const videos = await Videos.findAll({
         where: {
-            courseId: courseId
+            courseIdFk: courseId
         }
     });
 
@@ -119,10 +119,27 @@ WHERE interaction.videoid = :videoId;
             type: sequelize.QueryTypes.SELECT
         });
 
+
+
+        // Convert BLOB data to Base64 encoding for each video
+        const commentsWithPics = comments.map(comment => {
+            const imageBase64 = Buffer.from(comment.image).toString("base64");
+            return {
+                user_id: comment.user_id, // Change this to the appropriate field from your video model
+                user_name: comment.user_name,
+                comment: comment.comment,
+                InteractionID: comment.InteractionID,
+                InteractionDate: comment.InteractionDate,
+                image: imageBase64,
+                // Add more properties as needed
+            };
+        });
+
         const finalData = {
-            comments: comments,
+            comments: commentsWithPics,
             numberOfComments: numberOfComments
         }
+
 
         res.status(200).json(finalData);
     } catch (error) {
@@ -156,10 +173,33 @@ const deleteComment = asyncHandler(async (req, res) => {
 
 
 const addComment = asyncHandler(async (req, res) => {
-    const userId = req.params.userId;
+    const courseId = req.body.courseId;
+    const userId = req.body.userId;
+    const comment = req.body.comment;
+    const videoId = req.body.videoId;
 
-    res.status(200).json({ message: 'Comment deleted successfully' });
+    try {
+        // Create a new interaction record with the provided data
+        const newInteraction = await Interaction.create({
+            CourseID: courseId,
+            StudentID: userId,
+            comment: comment,
+            videoid: videoId,
+            InteractionDate: new Date(), // You can use the current date/time
+        });
+
+        const interactionId = newInteraction.InteractionID; // Get the interaction ID
+
+        console.log(`Comment added by ${userId} for course ${courseId}`);
+        res.status(200).json({ message: `Comment added by ${userId} for course ${courseId}`, interactionId: interactionId });
+    } catch (error) {
+        // Handle error
+        res.status(500).json({ message: 'Error adding comment' });
+    }
 });
+
+
+module.exports = addComment;
 
 
 
@@ -171,5 +211,6 @@ module.exports = {
     editVideo,
     deleteVideo,
     getVideoComments,
-    deleteComment
+    deleteComment,
+    addComment
 };

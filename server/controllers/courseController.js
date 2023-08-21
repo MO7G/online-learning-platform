@@ -5,26 +5,44 @@ const Course = db.Course
 // @route Get /api/goals
 // @access Public
 const ListAllCourses = asyncHandler(async (req, res) => {
-    const courses = await Course.findAll();
+    const query = `
+        SELECT u.user_name,c.courseId, u.image as userImage, c.courseName, c.courseImage, c.createdAt, c.numberofVideos
+        FROM user u
+        JOIN courses c ON u.user_id = c.TeacherID
+        WHERE u.role = 'teacher'
+    `;
 
-    // Convert BLOB data to Base64 encoding for each course
-    const coursesWithImages = courses.map(course => {
-        const imageBase64 = Buffer.from(course.courseImage).toString("base64");
-        return {
-            _id: course.courseId, // Change this to the appropriate field from your course model
-            name: course.courseName,
-            description: course.courseDescription,
-            date: course.coursedate,
-            numOfVideos: course.numberofVideos,
-            img: imageBase64,
-            // Add more properties as needed
-        };
-    });
+    try {
+        const course = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+        });
 
-    res.status(200).json(coursesWithImages);
+
+        console.log("this is the course ", course)
+        // Convert BLOB data to Base64 encoding for each course
+        const coursesWithImages = course.map(item => {
+            const userImage = Buffer.from(item.userImage).toString("base64");
+            const courseImage = Buffer.from(item.courseImage).toString("base64");
+            return {
+                _id: item.courseId, // Change this to the appropriate field from your course model
+                name: item.courseName,
+                description: item.courseDescription,
+                date: item.coursedate,
+                numOfVideos: item.numberofVideos,
+                userImage: userImage,
+                courseImage: courseImage,
+                user_name: item.user_name
+                // Add more properties as needed
+            };
+        });
+
+
+        res.status(200).json(coursesWithImages);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching courses' });
+    }
 });
-
-
 
 
 
@@ -68,6 +86,7 @@ const getCourseById = asyncHandler(async (req, res) => {
             courseImage: courseImage
             // Add more properties as needed
         };
+        console.log(" i am here ", finalplaylistDetails);
 
 
         res.status(200).json(finalplaylistDetails);

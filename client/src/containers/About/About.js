@@ -1,15 +1,45 @@
 // About.js
-import React from "react";
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import Popup from "../../components/Popup/Popup";
+import { images } from "../../constants";
+import { endpoints } from '../../config/apiConfig';
+import axios from 'axios';
 import './About.scss'
+import detailedReviews from './Reviews'
 const About = () => {
   const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [facts, setFacts] = useState([])
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const response = await axios.get(endpoints.about.users);
+        console.log("this is the about response ", response);
+        setUsers(response.data);
+      } catch (error) {
+        // Handle error
+        console.log(error)
+      }
+    }
 
-  const handleAddClick = () => {
-    // Navigate to /about/yes when the "Add" button is clicked
-    navigate("/about/yes");
-  };
+
+    async function fetchFacts() {
+      try {
+        const response = await axios.get(endpoints.about.facts);
+        console.log("this is the about the facts are here  ", response);
+        setFacts(response.data);
+      } catch (error) {
+        // Handle error
+        console.log(error)
+      }
+    }
+
+
+    fetchReviews();
+    fetchFacts();
+  }, [])
+
 
   return (
     <div>
@@ -18,13 +48,17 @@ const About = () => {
         <div class="row">
 
           <div class="image">
-            <img src="images/about-img.svg" alt="" />
+            <img src={images.about} alt="" />
           </div>
 
           <div class="content">
             <h3>why choose us?</h3>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut dolorum quasi illo? Distinctio expedita commodi, nemo a quam error repellendus sint, fugiat quis numquam eum eveniet sequi aspernatur quaerat tenetur.</p>
-            <a href="courses.html" class="inline-btn">our courses</a>
+            <p>
+              Unleash your learning potential with EduPrime Hub. Our carefully curated courses offer expert-led education tailored to your needs. With flexible schedules, top-tier instructors, and a supportive community, you'll master new skills at your pace. Elevate your future with recognized certifications and a network of like-minded learners. Join  now and transform your journey of self-improvement into a story of success.</p>
+
+            <Link to={"/courses"}>
+              <a class="inline-btn">our courses</a>
+            </Link>
           </div>
 
         </div>
@@ -34,7 +68,7 @@ const About = () => {
           <div class="box">
             <i class="fas fa-graduation-cap"></i>
             <div>
-              <h3>+10k</h3>
+              <h3>{facts.numberOfCourses}</h3>
               <p>online courses</p>
             </div>
           </div>
@@ -42,7 +76,7 @@ const About = () => {
           <div class="box">
             <i class="fas fa-user-graduate"></i>
             <div>
-              <h3>+40k</h3>
+              <h3>{facts.numberOfStudents}</h3>
               <p>brilliant students</p>
             </div>
           </div>
@@ -50,7 +84,7 @@ const About = () => {
           <div class="box">
             <i class="fas fa-chalkboard-user"></i>
             <div>
-              <h3>+2k</h3>
+              <h3>{facts.numberOfTeachers}</h3>
               <p>expert tutors</p>
             </div>
           </div>
@@ -67,113 +101,35 @@ const About = () => {
 
       </section>
 
+
       <section class="reviews">
 
         <h1 class="heading">student's reviews</h1>
 
         <div class="box-container">
 
-          <div class="box">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, suscipit a. Quibusdam, dignissimos consectetur. Sed ullam iusto eveniet qui aut quibusdam vero voluptate libero facilis fuga. Eligendi eaque molestiae modi?</p>
-            <div class="student">
-              <img src="images/pic-2.jpg" alt="" />
-              <div>
-                <h3>john deo</h3>
-                <div class="stars">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                </div>
-              </div>
-            </div>
-          </div>
+          {
+            users.map((item, index) => (
 
-          <div class="box">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, suscipit a. Quibusdam, dignissimos consectetur. Sed ullam iusto eveniet qui aut quibusdam vero voluptate libero facilis fuga. Eligendi eaque molestiae modi?</p>
-            <div class="student">
-              <img src="images/pic-3.jpg" alt="" />
-              <div>
-                <h3>john deo</h3>
-                <div class="stars">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
+              <div class="box" key={index}>
+                <div class="student">
+                  <img className='image'
+                    src={`data:image/jpeg;base64,${item.userImage}`} />
+                  <div>
+                    <h3>{item.userName}</h3>
+                  </div>
+                </div>
+                <div className='review'> <p>
+                  {detailedReviews[index]}
+                </p>
                 </div>
               </div>
-            </div>
-          </div>
+            ))
+          }
 
-          <div class="box">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, suscipit a. Quibusdam, dignissimos consectetur. Sed ullam iusto eveniet qui aut quibusdam vero voluptate libero facilis fuga. Eligendi eaque molestiae modi?</p>
-            <div class="student">
-              <img src="images/pic-4.jpg" alt="" />
-              <div>
-                <h3>john deo</h3>
-                <div class="stars">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="box">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, suscipit a. Quibusdam, dignissimos consectetur. Sed ullam iusto eveniet qui aut quibusdam vero voluptate libero facilis fuga. Eligendi eaque molestiae modi?</p>
-            <div class="student">
-              <img src="images/pic-5.jpg" alt="" />
-              <div>
-                <h3>john deo</h3>
-                <div class="stars">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="box">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, suscipit a. Quibusdam, dignissimos consectetur. Sed ullam iusto eveniet qui aut quibusdam vero voluptate libero facilis fuga. Eligendi eaque molestiae modi?</p>
-            <div class="student">
-              <img src="images/pic-6.jpg" alt="" />
-              <div>
-                <h3>john deo</h3>
-                <div class="stars">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="box">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, suscipit a. Quibusdam, dignissimos consectetur. Sed ullam iusto eveniet qui aut quibusdam vero voluptate libero facilis fuga. Eligendi eaque molestiae modi?</p>
-            <div class="student">
-              <img src="images/pic-7.jpg" alt="" />
-              <div>
-                <h3>john deo</h3>
-                <div class="stars">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
 

@@ -8,20 +8,11 @@ const PlayListVideos = () => {
     const { courseId } = useParams();
     const [courseVideos, setCourseVideos] = useState([]);
     const [userCount, setUserCount] = useState(0);
-    const fetchUserCount = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/api/user'); // Replace with your API endpoint
-            setUserCount(response.data.studentCount);
-        } catch (error) {
-            console.error('Error fetching user count:', error);
-        }
-    };
     useEffect(() => {
         async function fetchCourses() {
-
             try {
                 const response = await axios.get(endpoints.videos.videosByCourse.replace(':courseId', courseId));
-                console.log("this is the playlistcoursevideo response ", response);
+                console.log("this is the playlist coursevideo response ", response);
                 setCourseVideos(response.data);
             } catch (error) {
                 // Handle error
@@ -30,20 +21,6 @@ const PlayListVideos = () => {
         fetchCourses();
     }, []);
 
-
-    useEffect(() => {
-        // fetchUserCount();
-        // const interval = setInterval(fetchUserCount, 5000); // Poll every 5 seconds
-        //return () => clearInterval(interval);
-    }, []);
-
-
-
-
-
-
-
-
     return (
 
         <section class="playlist-videos">
@@ -51,7 +28,7 @@ const PlayListVideos = () => {
             <h1 class="heading">playlist videos {userCount}</h1>
             <div class="box-container">
                 {courseVideos.map(item => (
-                    <Link key={item._id} to={`/video/${item._id}`} className="box">
+                    <Link key={item._id} to={`/video/${item._id}?courseId=${courseId}`} className="box">
                         <i className="fas fa-play"></i>
                         <img src={`data:image/jpeg;base64, ${item.img}`} alt="" />
                         <h3>{item.name}</h3>
@@ -59,7 +36,7 @@ const PlayListVideos = () => {
                 ))}
             </div>
 
-        </section>
+        </section >
     )
 }
 

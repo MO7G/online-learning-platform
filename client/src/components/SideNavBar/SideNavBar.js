@@ -7,7 +7,7 @@ import { FaSignOutAlt } from 'react-icons/fa'
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { reset, logout, generalInfo } from "../../features/auth/authSlice";
-
+import TeacherWrapper from '../wrapper/TeacherWrapper';
 const SideNavBar = () => {
   const [renderSideNavActive, setRenderSideNavActive] = useState(false);
   const user = useSelector(state => state.auth.user);
@@ -85,6 +85,13 @@ const SideNavBar = () => {
             <i className="fas fa-headset"></i>
             <span>Contact Us</span>
           </Link>
+          <TeacherWrapper>
+            <Link to="/profile">
+              <i className="fas fa-home"></i>
+              <span>Teacher Dashboard</span>
+            </Link>
+          </TeacherWrapper>
+
         </nav>
       </div>
     </div>

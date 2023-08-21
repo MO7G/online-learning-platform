@@ -25,6 +25,9 @@ const Register = () => {
     }
 
     if (isSuccess || user) {
+      if (user) {
+        toast.success("successful login");
+      }
       navigate("/");
     }
 

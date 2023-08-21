@@ -83,16 +83,7 @@ const Header = () => {
             </a>
           </Link>
 
-          <form action="search.html" method="post" class="search-form">
-            <input
-              type="text"
-              name="search_box"
-              required
-              placeholder="search courses..."
-              maxlength="100"
-            />
-            <button type="submit" class="fas fa-search"></button>
-          </form>
+
 
           <div class="icons">
             <div id="menu-btn" onClick={toggleSideNav}><FaGripLines></FaGripLines></div>

@@ -15,9 +15,10 @@ const Courses = () => {
             setCourses(response.data);
          } catch (error) {
             // Handle error
-            console.log("no courses failed")
+            console.log(error)
          }
       }
+      console.log("i am useeffect")
       fetchCourses();
    }, []);
 
@@ -33,15 +34,15 @@ const Courses = () => {
                   <div key={item._id} className="box">
                      <div className="tutor">
                         <div className='tutor_wrapper'>
-                           <img src={`data:image/jpeg;base64, ${item.img}`} alt="" />
+                           <img src={`data:image/jpeg;base64, ${item.userImage}`} alt="" />
                         </div>
                         <div className="info">
-                           <h3>moha</h3>
+                           <h3>{item.user_name}</h3>
                            <span>{item.date}</span>
                         </div>
                      </div>
                      <div className="thumb">
-                        <img src={`data:image/png;base64, ${item.img}`} alt="" />
+                        <img src={`data:image/png;base64, ${item.courseImage}`} alt="" />
                         <span>{item.numOfVideos} videos</span>
                      </div>
                      <h3 className="title">{item.name}</h3>

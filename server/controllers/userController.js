@@ -27,12 +27,11 @@ const register = asyncHandler(async (req, res) => {
         throw new Error("User already exists");
     }
 
-    const salt = await bcrypt.hash(password, 10);
 
     const user = await User.create({
         user_name: name,
         gmail: email,
-        pass: salt,
+        pass: password,
         role: "student",
         image: imageBuffer, // Store the image buffer as BLOB data
     })
@@ -67,27 +66,35 @@ const login = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error("Please add all fields");
     }
+
+    console.log("from the login here ");
     const user = await User.findOne({
         where: {
             gmail: email
         }
-    })
-    // Convert BLOB data to Base64 encoding
-    const imageBase64 = Buffer.from(user.image).toString("base64");
-    if (user && (await bcrypt.compare(password, user.pass))) {
+    });
+
+    if (user && password === user.pass) {
+        // Convert BLOB data to Base64 encoding
+        const imageBase64 = Buffer.from(user.image).toString("base64");
+
         res.status(201).json({
             _id: user.user_id,
             name: user.user_name,
             img: imageBase64,
             role: user.role,
             token: generateJwt(user.user_id, user.role)
-        })
-    } else {
+        });
+    } else if (user) {
+        // User exists but password is incorrect
         res.status(400);
-        throw new Error("invalid Credentials");
+        throw new Error("Invalid Credentials");
+    } else {
+        // User does not exist
+        res.status(400);
+        throw new Error("User not found");
     }
-
-})
+});
 
 
 // @desc  Put Goals
@@ -130,11 +137,83 @@ const generateJwt = ((id, role) => {
 })
 
 
+const getTeacherProfile = asyncHandler(async (req, res) => {
+    const teacherId = req.params.teacherId;
+
+    const query = `
+        SELECT
+            u.image,
+            u.user_name,
+            COUNT(DISTINCT c.courseId) AS num_courses,
+            SUM(v.likes_counter) AS total_likes,
+            COUNT(i.InteractionID) AS total_comments
+        FROM user u
+        LEFT JOIN courses c ON u.user_id = c.TeacherID
+        LEFT JOIN videos v ON c.courseId = v.courseIdFk
+        LEFT JOIN interaction i ON v.videoId = i.videoid
+        WHERE u.user_id = :teacherId AND u.role = 'teacher'
+        GROUP BY u.user_id
+    `;
+
+    try {
+        const teacherProfile = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { teacherId: teacherId }
+        });
+
+        teacherProfile.forEach(profile => {
+            const userImage = Buffer.from(profile.image).toString("base64");
+            profile.image = userImage;
+        });
+
+        res.status(200).json(teacherProfile);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching teacher profile' });
+    }
+});
+
+const getTeacherCourses = asyncHandler(async (req, res) => {
+    const teacherId = req.params.teacherId;
+
+    const query = `
+        SELECT
+            c.courseId,
+            c.courseName,
+            c.courseImage,
+            c.createdAt,
+            c.numberofVideos
+        FROM user u
+        JOIN courses c ON u.user_id = c.TeacherID
+        WHERE u.role = 'teacher' AND u.user_id = :teacherId
+    `;
+
+    try {
+        const teacherCourses = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { teacherId: teacherId }
+        });
+
+        teacherCourses.forEach(course => {
+            const courseImage = Buffer.from(course.courseImage).toString("base64");
+            course.courseImage = courseImage;
+        });
+
+        res.status(200).json(teacherCourses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching teacher courses' });
+    }
+});
+
+
 
 module.exports = {
     register,
     login,
     profile,
     general,
-    numOfUsers
+    numOfUsers,
+    getTeacherProfile,
+    getTeacherCourses
 };

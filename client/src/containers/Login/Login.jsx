@@ -34,9 +34,9 @@ const Login = () => {
       toast.error(message);
     }
 
-    if (isSuccess || user) {
-      if (!user) {
-        toast.success(message);
+    if (isSuccess) {
+      if (user) {
+        toast.success("successful login");
       }
       navigate("/");
     }

@@ -12,7 +12,7 @@ const Playlist = () => {
         async function fetchCourses() {
             try {
                 const response = await axios.get(endpoints.courses.getCourseById.replace(':courseId', courseId));
-                console.log("this is the course ", course)
+                console.log("this is the  response from the playlist  ", response)
                 setCourse(response.data);
 
             } catch (error) {
@@ -49,7 +49,7 @@ const Playlist = () => {
                         <div class="details">
                             <h3>{course.courseName}</h3>
                             <p>{course.description}</p>
-                            <Link to={`${course.teacherId}`}>
+                            <Link to={`/TeacherProfile?teacherId=${course.teacherId}`}>
                                 <a class="inline-btn">view profile</a>
                             </Link>
                         </div>
