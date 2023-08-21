@@ -167,7 +167,7 @@ const VideoPage = () => {
 
     return (
         <div>
-            <button onClick={temp}>click here </button>
+
             <section class="watch-video">
 
                 <div class="video-container">

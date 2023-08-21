@@ -25,7 +25,7 @@ const PlayListVideos = () => {
 
         <section class="playlist-videos">
 
-            <h1 class="heading">playlist videos {userCount}</h1>
+            <h1 class="heading">playlist videos {courseVideos.length}</h1>
             <div class="box-container">
                 {courseVideos.map(item => (
                     <Link key={item._id} to={`/video/${item._id}?courseId=${courseId}`} className="box">
