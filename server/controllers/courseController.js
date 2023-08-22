@@ -18,7 +18,6 @@ const ListAllCourses = asyncHandler(async (req, res) => {
         });
 
 
-        console.log("this is the course ", course)
         // Convert BLOB data to Base64 encoding for each course
         const coursesWithImages = course.map(item => {
             const userImage = Buffer.from(item.userImage).toString("base64");
@@ -51,7 +50,7 @@ const ListAllCourses = asyncHandler(async (req, res) => {
 // @access Public
 const getCourseById = asyncHandler(async (req, res) => {
     const courseId = req.params.courseId; // Assuming the route parameter is named 'id'
-    console.log(courseId)
+
     try {
         const query = ` SELECT  courses.courseId,courses.courseName,courses.courseDescription,courses.coursedate, courses.numberofVideos,courses.TeacherID,courses.courseImage,
             user.user_id , user.image, user.user_name
@@ -86,7 +85,6 @@ const getCourseById = asyncHandler(async (req, res) => {
             courseImage: courseImage
             // Add more properties as needed
         };
-        console.log(" i am here ", finalplaylistDetails);
 
 
         res.status(200).json(finalplaylistDetails);
@@ -101,8 +99,6 @@ const getCourseById = asyncHandler(async (req, res) => {
 const getCourseTeacherInfo = asyncHandler(async (req, res) => {
     const courseId = req.params.courseId; // Assuming the route parameter is named 'id'
     const teacherId = req.params.teacherId;
-    console.log("this is the course id ", courseId)
-    console.log("this is the teahcer id ", teacherId);
     res.status(200).json({ message: "good connection to here" })
 });
 

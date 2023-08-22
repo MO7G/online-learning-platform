@@ -8,9 +8,9 @@ const User = db.User
 // @route Get /api/goals
 // @access Public
 const register = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     const imageBuffer = req.file.buffer; // Image buffer
-    console.log(req.body);
+    console.log("i am the role ", role);
     if (!name || !email || !password) {
         res.status(400);
         throw new Error("Please fill in all fields");
@@ -32,7 +32,7 @@ const register = asyncHandler(async (req, res) => {
         user_name: name,
         gmail: email,
         pass: password,
-        role: "student",
+        role: role,
         image: imageBuffer, // Store the image buffer as BLOB data
     })
 
@@ -206,6 +206,65 @@ const getTeacherCourses = asyncHandler(async (req, res) => {
     }
 });
 
+const getAllTeachers = asyncHandler(async (req, res) => {
+    const query = `
+        SELECT
+            u.user_id,
+            u.user_name,
+            u.role,
+            u.image AS user_image,
+            COUNT(c.courseId) AS num_courses,
+            COUNT(v.videoId) AS num_videos,
+            SUM(v.likes_counter) AS total_likes
+        FROM user u
+        LEFT JOIN courses c ON u.user_id = c.TeacherID
+        LEFT JOIN videos v ON c.courseId = v.courseIdFk
+        WHERE u.role = 'teacher'
+        GROUP BY u.user_id;
+    `;
+
+    try {
+        const teachersData = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+        });
+
+        const processedTeachers = await Promise.all(teachersData.map(async teacher => {
+            if (teacher.user_image) {
+                const userImage = Buffer.from(teacher.user_image).toString("base64");
+                teacher.user_image = userImage;
+            }
+            return teacher;
+        }));
+
+        res.status(200).json(processedTeachers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching teachers data' });
+    }
+});
+
+const getAllVideosCounter = asyncHandler(async (req, res) => {
+    const teacherId = req.params.teacherId;
+    console.log("this is hte user id from the server ", teacherId)
+    const query = `
+        SELECT SUM(c.numberofVideos) AS total_videos from courses c join user u on c.TeacherID = u.user_id where u.user_id = :teacherId
+
+    `;
+
+    try {
+        const teacherProfileVideosTotal = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { teacherId: teacherId }
+        });
+
+
+        res.status(200).json(teacherProfileVideosTotal);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching teacher profile' });
+    }
+});
 
 
 module.exports = {
@@ -215,5 +274,7 @@ module.exports = {
     general,
     numOfUsers,
     getTeacherProfile,
-    getTeacherCourses
+    getTeacherCourses,
+    getAllTeachers,
+    getAllVideosCounter
 };

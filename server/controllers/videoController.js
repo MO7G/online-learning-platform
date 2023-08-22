@@ -46,16 +46,39 @@ const getCourseVideos = asyncHandler(async (req, res) => {
 const getVideosById = asyncHandler(async (req, res) => {
     const videoId = req.params.videoId;
 
+    const query = `
+        SELECT v.videoId, v.videoLink, v.videoName, v.likes_counter, v.description,
+               u.user_id, u.user_name, u.role, u.image AS user_image, v.videoDate
+        FROM videos v
+        JOIN courses c ON c.courseId = v.courseIdFk 
+        JOIN user u ON c.TeacherID = u.user_id
+        WHERE v.videoId = :videoId;
+    `;
+
     try {
-        const video = await Videos.findByPk(videoId, {
-            attributes: { exclude: ['image'] } // Exclude the 'image' property from the result
+        const videoData = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT,
+            replacements: { videoId: videoId }
         });
+
+        if (videoData.length === 0) {
+            return res.status(404).json({ message: 'Video not found' });
+        }
+
+        const video = videoData[0];
+
+        if (video.user_image) {
+            const userImage = Buffer.from(video.user_image).toString("base64");
+            video.user_image = userImage;
+        }
 
         res.status(200).json(video);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 
 
@@ -199,7 +222,91 @@ const addComment = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = addComment;
+const addLike = asyncHandler(async (req, res) => {
+    const courseId = req.body.courseId;
+    const userId = req.body.userId;
+    const videoId = req.body.videoId;
+
+    try {
+        const newInteraction = await Interaction.create({
+            like: true, // Setting the like to true
+            CourseID: courseId,
+            StudentID: userId,
+            videoid: videoId,
+            InteractionDate: new Date(), // You can set the interaction date here
+        });
+
+        res.status(200).json({
+            message: `successful like man`, interaction: newInteraction,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error adding like' });
+    }
+});
+
+
+
+
+const removeLike = asyncHandler(async (req, res) => {
+    const userId = req.params.removeLikeUserId;
+    console.log("from the server ", userId)
+    const query = `
+        DELETE FROM interaction
+        WHERE interaction.StudentID = :userId
+        AND interaction.comment IS NULL;
+    `;
+
+    try {
+        await sequelize.query(query, {
+            replacements: { userId },
+            type: sequelize.QueryTypes.DELETE,
+        });
+
+        res.status(200).json({ message: 'Interactions removed successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error removing interactions' });
+    }
+});
+
+
+
+
+
+const checkLike = asyncHandler(async (req, res) => {
+    const courseId = req.body.courseId;
+    const userId = req.body.userId;
+    const videoId = req.body.videoId;
+
+    const query = `
+        SELECT interaction.like
+        FROM interaction
+        JOIN user ON user.user_id = interaction.StudentID
+        WHERE user.user_id = :userId
+        AND interaction.CourseID = :courseId
+        AND interaction.videoid = :videoId
+        AND interaction.comment IS NULL
+    `;
+
+    try {
+        const results = await sequelize.query(query, {
+            replacements: { userId, courseId, videoId },
+            type: sequelize.QueryTypes.SELECT,
+        });
+
+        console.log(" i am the result ", results);
+        if (results.length > 0) {
+            res.status(200).json({ liked: true });
+        } else {
+            res.status(200).json({ liked: false });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error checking like' });
+    }
+});
+
 
 
 
@@ -212,5 +319,8 @@ module.exports = {
     deleteVideo,
     getVideoComments,
     deleteComment,
-    addComment
+    addComment,
+    addLike,
+    removeLike,
+    checkLike
 };
