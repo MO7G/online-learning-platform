@@ -8,6 +8,7 @@ import Courses from '../Courses/Courses';
 const TeacherProfile = () => {
     const [teacherProfile, setTeacherProfile] = useState([]);
     const [coureses, setCourses] = useState([]);
+    const [totalNumberOfVidoes, setTotalNumberOfVidoes] = useState([])
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const teacherId = queryParams.get('teacherId');
@@ -25,6 +26,18 @@ const TeacherProfile = () => {
             }
         }
 
+        async function fetchTeacherAllVideos() {
+            try {
+                const response = await axios.get(endpoints.user.TeacherVideosTotal.replace(':teacherId', teacherId));
+                setTotalNumberOfVidoes(response.data[0].total_videos)
+                // setTeacherProfile(response.data[0]);
+            } catch (error) {
+                // Handle error
+                console.log("no courses failed")
+            }
+        }
+
+
 
         async function fetchTeacherCourses() {
             try {
@@ -38,6 +51,7 @@ const TeacherProfile = () => {
 
         fetchTeacherProfile();
         fetchTeacherCourses();
+        fetchTeacherAllVideos();
     }, []);
 
 
@@ -58,7 +72,7 @@ const TeacherProfile = () => {
                     </div>
                     <div class="flex">
                         <p>total courses : <span>{teacherProfile.num_courses}</span></p>
-                        <p>total videos : <span>temp</span></p>
+                        <p>total videos : <span>{totalNumberOfVidoes}</span></p>
                         <p>total likes : <span>{teacherProfile.total_likes}</span></p>
                         <p>total comments : <span>{teacherProfile.total_comments}</span></p>
                     </div>

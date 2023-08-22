@@ -11,7 +11,10 @@ export const endpoints = {
         videoDetails: `${API_BASE_URL}/videos/video/:id`, // Example with dynamic parameter
         videoCommentDetails: `${API_BASE_URL}/videos/video/:id/comments`,
         deleteVideoComment: `${API_BASE_URL}/videos/video/DeleteComment/:interactionId`,
-        addVideoComment: `${API_BASE_URL}/videos/video/addComment/:userId`
+        addVideoComment: `${API_BASE_URL}/videos/video/addComment/:userId`,
+        addVideoLike: `${API_BASE_URL}/videos/video/addLike/:userId`,
+        removeVideoLike: `${API_BASE_URL}/videos/video/removeLike/:userId`,
+        checkVideoLike: `${API_BASE_URL}/videos/video/checkLike/:userId`
         // Add more video endpoints as needed
     },
     about: {
@@ -22,6 +25,8 @@ export const endpoints = {
     user: {
         teacherProfile: `${API_BASE_URL}/user/user/teacherProfile/:teacherId`,
         teacherCourses: `${API_BASE_URL}/user/user/teacherCourses/:teacherId`,
+        allTeachers: `${API_BASE_URL}/user/user/allTeachers`,
+        TeacherVideosTotal: `${API_BASE_URL}/user/user/getAllVideosCounter/:teacherId`,
     }
     // Add more endpoints for other components if needed
 };

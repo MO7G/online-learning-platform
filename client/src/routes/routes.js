@@ -15,6 +15,7 @@ import VideoPage from "../containers/VideoPage/VideoPage";
 import ProtectedRoutes from '../containers/util/ProtectedRoutes'
 import TeacherProfile from "../containers/TeacherProfile/TeacherProfile";
 import SkipRoutes from '../containers/util/SkipRoutes'
+import TeacherRegister from "../containers/TeacherRegister/TeacherRegister";
 const RoutesConfig = () => {
   return (
     <BrowserRouter> {/* Use BrowserRouter here */}
@@ -36,6 +37,10 @@ const RoutesConfig = () => {
           }
           <Route path="/about" element={<About />} />
 
+          <Route path="/teacherRegister" element={<TeacherRegister />} />
+
+          <Route path="/teacherProfile" element={<TeacherRegister />} />
+
           {/* Private Routes  */}
           <Route element={<SkipRoutes />}>
             <Route element={<Login />} path="/login" exact />
@@ -45,7 +50,7 @@ const RoutesConfig = () => {
           {/* Courses Routes  */}
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:courseId" element={<Playlist />} />
-          <Route path="/courses/:courseId/:teacherIdzz" element={<TeacherProfile />} />
+          <Route path="/courses/:courseId/:teacherId" element={<TeacherProfile />} />
 
 
           <Route path="/contactus" element={<Contactus />} />

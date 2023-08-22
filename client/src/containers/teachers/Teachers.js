@@ -1,12 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import { endpoints } from '../../config/apiConfig';
+import { Link } from 'react-router-dom';
+import StudentWrapper from '../../components/wrapper/StudentWrapper';
+
 import './Teachers.scss'
 
 const Teachers = () => {
-    const role = "teacher"
+    const [teachers, setTeachers] = useState([]);
+    useEffect(() => {
+        async function fetchTeachers() {
+            try {
+                const response = await axios.get(endpoints.user.allTeachers);
+                console.log("this is the res of all teachers   ", response)
+                setTeachers(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchTeachers();
+    }, []);
+
+
     return (
         <div>
             <section class="teachers">
-
                 <h1 class="heading">expert teachers</h1>
 
                 <form action="" method="post" class="search-tutor">
@@ -14,111 +32,42 @@ const Teachers = () => {
                     <button type="submit" class="fas fa-search" name="search_tutor"></button>
                 </form>
 
+
                 <div class="box-container">
-                 {role != "teacher" ? "" :    <div class="box offer">
-                        <h3>become a tutor</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, itaque ipsam fuga ex et aliquam.</p>
-                        <a href="register.html" class="inline-btn">get started</a>
-                    </div>
-                 }
-                 
-                    <div class="box">
-                        <div class="tutor">
-                            <img src="images/pic-2.jpg" alt="" />
-                            <div>
-                                <h3>john deo</h3>
-                                <span>developer</span>
-                            </div>
-                        </div>
-                        <p>total playlists : <span>4</span></p>
-                        <p>total videos : <span>18</span></p>
-                        <p>total likes : <span>1208</span></p>
-                        <a href="teacher_profile.html" class="inline-btn">view profile</a>
-                    </div>
 
-                    <div class="box">
-                        <div class="tutor">
-                            <img src="images/pic-3.jpg" alt="" />
-                            <div>
-                                <h3>john deo</h3>
-                                <span>developer</span>
-                            </div>
-                        </div>
-                        <p>total playlists : <span>4</span></p>
-                        <p>total videos : <span>18</span></p>
-                        <p>total likes : <span>1208</span></p>
-                        <a href="teacher_profile.html" class="inline-btn">view profile</a>
-                    </div>
+                    <StudentWrapper>
+                        <div class="box offer">
+                            <h3>become a tutor</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, itaque ipsam fuga ex et aliquam.</p>
+                            <Link to={"/teacherRegister"}>
+                                <a href="register.html" class="inline-btn">get started</a>
+                            </Link>
 
-                    <div class="box">
-                        <div class="tutor">
-                            <img src="images/pic-4.jpg" alt="" />
-                            <div>
-                                <h3>john deo</h3>
-                                <span>developer</span>
-                            </div>
                         </div>
-                        <p>total playlists : <span>4</span></p>
-                        <p>total videos : <span>18</span></p>
-                        <p>total likes : <span>1208</span></p>
-                        <a href="teacher_profile.html" class="inline-btn">view profile</a>
-                    </div>
+                    </StudentWrapper>
 
-                    <div class="box">
-                        <div class="tutor">
-                            <img src="images/pic-5.jpg" alt="" />
-                            <div>
-                                <h3>john deo</h3>
-                                <span>developer</span>
-                            </div>
-                        </div>
-                        <p>total playlists : <span>4</span></p>
-                        <p>total videos : <span>18</span></p>
-                        <p>total likes : <span>1208</span></p>
-                        <a href="teacher_profile.html" class="inline-btn">view profile</a>
-                    </div>
 
-                    <div class="box">
-                        <div class="tutor">
-                            <img src="images/pic-6.jpg" alt="" />
-                            <div>
-                                <h3>john deo</h3>
-                                <span>developer</span>
+                    {teachers.map((teacher) => (
+                        <div class="box">
+                            <div class="tutor">
+                                <img className='image'
+                                    src={`data:image/jpeg;base64,${teacher.user_image}`} />
+                                <div>
+                                    <h3>{teacher.user_name}</h3>
+                                    <span>{teacher.role}</span>
+                                </div>
                             </div>
-                        </div>
-                        <p>total playlists : <span>4</span></p>
-                        <p>total videos : <span>18</span></p>
-                        <p>total likes : <span>1208</span></p>
-                        <a href="teacher_profile.html" class="inline-btn">view profile</a>
-                    </div>
+                            <p>total playlists : <span>{teacher.num_courses}</span></p>
+                            <p>total videos : <span>{teacher.num_videos}</span></p>
+                            <p>total likes : <span>{teacher.total_likes}</span></p>
+                            <Link to={`/TeacherProfile?teacherId=${teacher.user_id}`}>
+                                <a class="inline-btn">view profile</a>
+                            </Link>
 
-                    <div class="box">
-                        <div class="tutor">
-                            <img src="images/pic-7.jpg" alt="" />
-                            <div>
-                                <h3>john deo</h3>
-                                <span>developer</span>
-                            </div>
                         </div>
-                        <p>total playlists : <span>4</span></p>
-                        <p>total videos : <span>18</span></p>
-                        <p>total likes : <span>1208</span></p>
-                        <a href="teacher_profile.html" class="inline-btn">view profile</a>
-                    </div>
+                    ))}
 
-                    <div class="box">
-                        <div class="tutor">
-                            <img src="images/pic-8.jpg" alt="" />
-                            <div>
-                                <h3>john deo</h3>
-                                <span>developer</span>
-                            </div>
-                        </div>
-                        <p>total playlists : <span>4</span></p>
-                        <p>total videos : <span>18</span></p>
-                        <p>total likes : <span>1208</span></p>
-                        <a href="teacher_profile.html" class="inline-btn">view profile</a>
-                    </div>
+
 
                 </div>
 

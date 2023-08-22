@@ -219,3 +219,56 @@
    width: 2rem;
    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
+
+
+.dataIcons{
+   color:var(--main-color);
+   margin-right: 10px;
+   font-size: 18px;
+}
+
+
+
+.likesIcons{
+   color: var(--main-color);
+   margin-right: 10px;
+   font-size: 18px;
+}
+
+
+
+
+
+
+
+
+.date {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  /* Other styles for the .date container */
+}
+
+.likebutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-color); /* Initial color for not clicked */
+  transition: background-color 0.3s ease; /* Smooth background-color transition */
+  width: 50px;
+
+  &:hover {
+    background-color: var(--main-color) !important;
+  }
+}
+
+.likeIcon {
+  color: var(--black);
+  font-size: 25px;
+}
+
+/* Use transitions for the "likeIconsOn" class to smoothly animate changes */
+.likeIconsOn {
+  background-color: var(--main-color) !important;
+  transform: scale(1.1); /* Example: Slightly scale up the button */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Apply transitions */
+}

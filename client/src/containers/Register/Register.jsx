@@ -62,7 +62,7 @@ const Register = () => {
       formData.append("email", email); // Append email field
       formData.append("password", password); // Append password field
       formData.append("image", image); // Append image field
-      console.log(formData.get("image"));
+      formData.append("role", "student");
       dispatch(register(formData));
     }
   };
@@ -70,7 +70,7 @@ const Register = () => {
     <div>
       <section class="form-container">
         <form onSubmit={onSubmit}>
-          <h3>Register Now</h3>
+          <h3>Register Now As A Student</h3>
           <p>
             Your Name <span>*</span>
           </p>

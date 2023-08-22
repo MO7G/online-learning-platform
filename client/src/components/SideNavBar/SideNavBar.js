@@ -14,7 +14,6 @@ const SideNavBar = () => {
   const isLogged = useSelector(state => state.auth.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const onLogout = () => {
     dispatch(logout())
     dispatch(reset())
@@ -86,7 +85,7 @@ const SideNavBar = () => {
             <span>Contact Us</span>
           </Link>
           <TeacherWrapper>
-            <Link to="/profile">
+            <Link to={`/TeacherProfile?teacherId=${user ? user._id : ' '}  `}>
               <i className="fas fa-home"></i>
               <span>Teacher Dashboard</span>
             </Link>
