@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { reset, logout, generalInfo } from "../../features/auth/authSlice";
 import TeacherWrapper from '../wrapper/TeacherWrapper';
+import StudentWrapper from '../wrapper/StudentWrapper';
+
 const SideNavBar = () => {
   const [renderSideNavActive, setRenderSideNavActive] = useState(false);
   const user = useSelector(state => state.auth.user);
@@ -90,6 +92,13 @@ const SideNavBar = () => {
               <span>Teacher Dashboard</span>
             </Link>
           </TeacherWrapper>
+
+          <StudentWrapper>
+            <Link to={`/enrolledCourses `}>
+              <i className="fas fa-home"></i>
+              <span>Your Courses</span>
+            </Link>
+          </StudentWrapper>
 
         </nav>
       </div>

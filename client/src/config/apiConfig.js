@@ -27,6 +27,12 @@ export const endpoints = {
         teacherCourses: `${API_BASE_URL}/user/user/teacherCourses/:teacherId`,
         allTeachers: `${API_BASE_URL}/user/user/allTeachers`,
         TeacherVideosTotal: `${API_BASE_URL}/user/user/getAllVideosCounter/:teacherId`,
+    },
+    enrol: {
+        insertEnrol: `${API_BASE_URL}/enrol/insertEnrol/:userId`,
+        getEnrol: `${API_BASE_URL}/enrol/getEnrol/:userId`,
+
+
     }
     // Add more endpoints for other components if needed
 };

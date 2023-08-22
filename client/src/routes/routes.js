@@ -16,6 +16,7 @@ import ProtectedRoutes from '../containers/util/ProtectedRoutes'
 import TeacherProfile from "../containers/TeacherProfile/TeacherProfile";
 import SkipRoutes from '../containers/util/SkipRoutes'
 import TeacherRegister from "../containers/TeacherRegister/TeacherRegister";
+import EnrolledCourses from "../containers/EnrolledCourses/EnrolledCourses";
 const RoutesConfig = () => {
   return (
     <BrowserRouter> {/* Use BrowserRouter here */}
@@ -36,7 +37,7 @@ const RoutesConfig = () => {
 
           }
           <Route path="/about" element={<About />} />
-
+          <Route path="/EnrolledCourses" element={<EnrolledCourses />} />
           <Route path="/teacherRegister" element={<TeacherRegister />} />
 
           <Route path="/teacherProfile" element={<TeacherRegister />} />

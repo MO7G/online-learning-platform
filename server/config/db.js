@@ -24,7 +24,16 @@ db.User = require('../models/userModel')(sequelize, Sequelize);
 db.Course = require('../models/courseModel')(sequelize, Sequelize);
 db.Videos = require('../models/videoModel')(sequelize, Sequelize);
 db.Interactions = require('../models/interactionModel')(sequelize, Sequelize);
+db.Enrol = require('../models/enrolModel')(sequelize, Sequelize);
 
+
+db.Enrol.sync()
+  .then(() => {
+    console.log('Enrol table synced');
+  })
+  .catch((error) => {
+    console.error('Error syncing User table:', error);
+  });
 
 db.User.sync()
   .then(() => {

@@ -20,6 +20,7 @@ app.use('/api/user', require('./routes/userRoutes'))
 app.use('/api/course', require('./routes/courseRoute'))
 app.use('/api/videos', require('./routes/videoRoute'))
 app.use('/api/about', require('./routes/aboutRoute'))
+app.use('/api/enrol', require('./routes/enrolRoute'))
 app.use(errorHandler);
 
 
